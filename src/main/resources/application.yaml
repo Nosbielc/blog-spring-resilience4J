@@ -1,7 +1,7 @@
 resilience4j:
   circuitbreaker:
     instances:
-      backendService:
+      UserService:
         slidingWindowSize: 10
         failureRateThreshold: 50
         waitDurationInOpenState: 1000
@@ -11,7 +11,19 @@ resilience4j:
         automaticTransitionFromOpenToHalfOpenEnabled: true
   ratelimiter:
     instances:
-      backendService:
+      UserService:
         limitForPeriod: 10
         limitRefreshPeriod: 1000
         timeoutDuration: 0
+  retry:
+    instances:
+      UserService:
+        maxAttempts: 3
+        waitDuration: 1000
+        retryExceptions:
+          - java.io.IOException
+  bulkhead:
+    instances:
+      UserService:
+        maxConcurrentCalls: 5
+        maxWaitDuration: 500
